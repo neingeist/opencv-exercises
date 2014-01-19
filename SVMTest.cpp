@@ -11,23 +11,30 @@ int main()
     Mat image = Mat::zeros(height, width, CV_8UC3);
 
     // Set up training data
-    float labels[4] = {1.0, -1.0, -1.0, -1.0};
-    Mat labelsMat(4, 1, CV_32FC1, labels);
+    Mat labelsMat = (Mat_<float>(9, 1) << 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0);
+    Mat trainingDataMat = (Mat_<float>(9, 2) <<
+      501, 10, 255, 255, 255, 305, 10, 1, 10, 500, 290, 290, 180, 290, 200, 200, 400, 400);
 
-    float trainingData[4][2] = { {501, 10}, {255, 10}, {501, 255}, {10, 501} };
-    Mat trainingDataMat(4, 2, CV_32FC1, trainingData);
+    assert(labelsMat.rows == trainingDataMat.rows);
 
     // Set up SVM's parameters
     CvSVMParams params;
     params.svm_type    = CvSVM::C_SVC;
-    params.kernel_type = CvSVM::LINEAR;
-    params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER, 100, 1e-6);
+    params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER + CV_TERMCRIT_EPS, 1000, 1e-6);
+    params.kernel_type = CvSVM::RBF; //CvSVM::RBF, CvSVM::LINEAR ...
+    params.degree = 1; // for poly
+    params.gamma = .0001; // for poly/rbf/sigmoid
+    params.coef0 = 0; // for poly/sigmoid
+
+    params.C = 7; // for CV_SVM_C_SVC, CV_SVM_EPS_SVR and CV_SVM_NU_SVR
+    params.nu = 0.0; // for CV_SVM_NU_SVC, CV_SVM_ONE_CLASS, and CV_SVM_NU_SVR
+    params.p = 0.0; // for CV_SVM_EPS_SVR
 
     // Train the SVM
     CvSVM SVM;
     SVM.train(trainingDataMat, labelsMat, Mat(), Mat(), params);
 
-    Vec3b green(0,255,0), blue (255,0,0);
+    Vec3b whiteish(200,200,200), blackish (55,55,55);
     // Show the decision regions given by the SVM
     for (int i = 0; i < image.rows; ++i)
         for (int j = 0; j < image.cols; ++j)
@@ -36,18 +43,18 @@ int main()
             float response = SVM.predict(sampleMat);
 
             if (response == 1)
-                image.at<Vec3b>(i,j)  = green;
+                image.at<Vec3b>(i,j)  = whiteish;
             else if (response == -1)
-                 image.at<Vec3b>(i,j)  = blue;
+                 image.at<Vec3b>(i,j)  = blackish;
         }
 
     // Show the training data
     int thickness = -1;
     int lineType = 8;
     for (int i = 0; i < trainingDataMat.rows; i++) {
-      const CvScalar color = (labels[i] == 1) ?
+      const CvScalar color = (labelsMat.at<float>(i) == 1) ?
         CV_RGB(255, 255, 255) : CV_RGB(0, 0, 0);
-      circle(image, Point(trainingData[i][0], trainingData[i][1]), 5,
+      circle(image, Point(trainingDataMat.at<float>(i, 0), trainingDataMat.at<float>(i, 1)), 5,
           color, thickness, lineType);
     }
 
@@ -59,12 +66,12 @@ int main()
     for (int i = 0; i < c; ++i)
     {
         const float* v = SVM.get_support_vector(i);
-        circle( image,  Point( (int) v[0], (int) v[1]),   6,  Scalar(128, 128, 128), thickness, lineType);
+        circle( image,  Point( (int) v[0], (int) v[1]),   6,  Scalar(0, 0, 128), thickness, lineType);
     }
 
     imwrite("result.png", image);        // save the image
 
-    imshow("SVM Simple Example", image); // show it to the user
+    imshow("SVM Non-Linear Example", image); // show it to the user
     waitKey(0);
 
 }
