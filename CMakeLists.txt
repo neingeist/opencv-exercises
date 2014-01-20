@@ -4,3 +4,6 @@ find_package( OpenCV REQUIRED )
 
 add_executable( SVMTest SVMTest.cpp )
 target_link_libraries( SVMTest ${OpenCV_LIBS} )
+
+add_executable( DisplayImage DisplayImage.cpp )
+target_link_libraries( DisplayImage ${OpenCV_LIBS} )
