@@ -67,7 +67,7 @@ int main()
         circle( image,  Point( (int) v[0], (int) v[1]),   6,  Scalar(0, 0, 128), thickness, lineType);
     }
 
-    imwrite("result.png", image);        // save the image
+    imwrite("SVMTest.png", image);        // save the image
 
     imshow("SVM Non-Linear Example", image); // show it to the user
     waitKey(0);
