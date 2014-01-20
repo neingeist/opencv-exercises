@@ -21,10 +21,8 @@ int main()
     CvSVMParams params;
     params.svm_type    = CvSVM::C_SVC;
     params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER + CV_TERMCRIT_EPS, 1000, 1e-6);
-    params.kernel_type = CvSVM::RBF; //CvSVM::RBF, CvSVM::LINEAR ...
-    params.degree = 1; // for poly
+    params.kernel_type = CvSVM::RBF;
     params.gamma = .0001; // for poly/rbf/sigmoid
-    params.coef0 = 0; // for poly/sigmoid
 
     params.C = 7; // for CV_SVM_C_SVC, CV_SVM_EPS_SVR and CV_SVM_NU_SVR
     params.nu = 0.0; // for CV_SVM_NU_SVC, CV_SVM_ONE_CLASS, and CV_SVM_NU_SVR
