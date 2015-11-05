@@ -10,3 +10,6 @@ SVMTest.png
 DisplayImage
 
 SharpenImage
+
+*.pyc
+digits_svm.dat
