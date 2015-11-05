@@ -11,9 +11,10 @@ int main()
     Mat image = Mat::zeros(height, width, CV_8UC3);
 
     // Set up training data
-    Mat labelsMat = (Mat_<float>(9, 1) << 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0);
-    Mat trainingDataMat = (Mat_<float>(9, 2) <<
-      501, 10, 255, 255, 255, 305, 10, 1, 10, 500, 290, 290, 180, 290, 200, 200, 400, 400);
+    Mat labelsMat = (Mat_<float>(11, 1) <<
+      1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0);
+    Mat trainingDataMat = (Mat_<float>(11, 2) <<
+      501, 10, 255, 255, 255, 305, 10, 1, 10, 500, 290, 290, 180, 290, 200, 200, 400, 400, 332, 143, 125, 350);
 
     assert(labelsMat.rows == trainingDataMat.rows);
 
@@ -21,8 +22,14 @@ int main()
     CvSVMParams params;
     params.svm_type    = CvSVM::C_SVC;
     params.term_crit   = cvTermCriteria(CV_TERMCRIT_ITER + CV_TERMCRIT_EPS, 1000, 1e-6);
+
+    // Kernel
+    //params.kernel_type = CvSVM::POLY;
     params.kernel_type = CvSVM::RBF;
+    //params.kernel_type = CvSVM::LINEAR;
     params.gamma = .0001; // for poly/rbf/sigmoid
+    params.degree = 4; // for poly XXX
+
 
     params.C = 7; // for CV_SVM_C_SVC, CV_SVM_EPS_SVR and CV_SVM_NU_SVR
     params.nu = 0.0; // for CV_SVM_NU_SVC, CV_SVM_ONE_CLASS, and CV_SVM_NU_SVR
