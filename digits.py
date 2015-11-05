@@ -1,26 +1,28 @@
 #!/usr/bin/env python
 
 '''
-SVM and KNearest digit recognition.
+SVM, Random forest and KNearest digit recognition.
+Modified from the OpenCV example.
 
 Sample loads a dataset of handwritten digits from '../data/digits.png'.
-Then it trains a SVM and KNearest classifiers on it and evaluates
+Then it trains a Random Forest, SVM and KNearest classifiers on it and evaluates
 their accuracy.
 
 Following preprocessing is applied to the dataset:
- - Moment-based image deskew (see deskew())
- - Digit images are split into 4 10x10 cells and 16-bin
-   histogram of oriented gradients is computed for each
-   cell
- - Transform histograms to space with Hellinger metric (see [1] (RootSIFT))
+  - Moment-based image deskew (see deskew())
+  - Digit images are split into 4 10x10 cells and 16-bin histogram of oriented
+    gradients is computed for each cell
+  - Transform histograms to space with Hellinger metric (see [1] (RootSIFT))
 
+Or in the "simple setting":
+  - Only moment-based image deskew (see deskew())
 
 [1] R. Arandjelovic, A. Zisserman
     "Three things everyone should know to improve object retrieval"
     http://www.robots.ox.ac.uk/~vgg/publications/2012/Arandjelovic12/arandjelovic12.pdf
 
 Usage:
-   digits.py
+     digits.py
 '''
 
 # built-in modules
