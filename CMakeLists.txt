@@ -10,3 +10,6 @@ target_link_libraries( DisplayImage ${OpenCV_LIBS} )
 
 add_executable( SharpenImage SharpenImage.cpp )
 target_link_libraries( SharpenImage ${OpenCV_LIBS} )
+
+add_executable( KalmanMouse KalmanMouse.cpp )
+target_link_libraries( KalmanMouse ${OpenCV_LIBS} )
