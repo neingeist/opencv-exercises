@@ -6,10 +6,9 @@ cmake_install.cmake
 
 SVMTest
 SVMTest.png
-
 DisplayImage
-
 SharpenImage
+KalmanMouse
 
 *.pyc
 digits_svm.dat
